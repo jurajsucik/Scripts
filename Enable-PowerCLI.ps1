@@ -99,10 +99,11 @@ Function Enable-PowerCLI{
     Throw "PowerCLI doesn't seem to be installed on this system!"
   }
 
+  $errorAction = "SilentlyContinue"
   # Load modules
   if($pcliBuild -ge 2548067)
   {
-    $loadedModule = Get-Module -Name VMware* -ErrorAction SilentlyContinue | %{$_.Name}
+    $loadedModule = Get-Module -Name VMware* -ErrorAction $errorAction | %{$_.Name}
     if($loadedModule -and $pcliBuild -ge 3737840)
     {
       $loadedModule = $loadedModule | where{$_ -notmatch 'Common$|SDK$'}
@@ -123,7 +124,7 @@ Function Enable-PowerCLI{
   }
   
   # Load PSSnapin
-  $loadedSnap = Get-PSSnapin -Name VMware* -ErrorAction SilentlyContinue | %{$_.Name}
+  $loadedSnap = Get-PSSnapin -Name VMware* -ErrorAction $errorAction | %{$_.Name}
   if($pcliBuild -ge 3737840)
   {
     $loadedSnap = $loadedSnap | where{$_ -notmatch 'Core$'}
